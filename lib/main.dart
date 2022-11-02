@@ -10,8 +10,11 @@ import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (c) => Store(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (c) => Store()),
+        ChangeNotifierProvider(create: (c) => Store2()),
+      ],
       child: MaterialApp(
         theme: style.theme,
         home: MyApp(),
@@ -221,8 +224,14 @@ class Store extends ChangeNotifier {
   var follower = 0;
   var followed = false;
 
-  changeName() {
-    name = 'john kim';
+  var profileImage = [];
+
+  getData() async {
+    var result = await http
+        .get(Uri.parse('https://codingapple1.github.io/app/profile.json'));
+    var result2 = jsonDecode(result.body);
+    profileImage = result2;
+    print(result2);
     notifyListeners();
   }
 
@@ -238,13 +247,17 @@ class Store extends ChangeNotifier {
   }
 }
 
+class Store2 extends ChangeNotifier {
+  var name = 'john kim';
+}
+
 class Profile extends StatelessWidget {
   const Profile({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(context.watch<Store>().name)),
+      appBar: AppBar(title: Text(context.watch<Store2>().name)),
       body: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -258,6 +271,12 @@ class Profile extends StatelessWidget {
               context.read<Store>().changeFollow();
             },
             child: Text('팔로우'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              context.read<Store>().getData();
+            },
+            child: Text('사진 가져오기'),
           )
         ],
       ),
