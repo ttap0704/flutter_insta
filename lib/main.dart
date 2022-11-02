@@ -5,12 +5,17 @@ import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    MaterialApp(
-      theme: style.theme,
-      home: MyApp(),
+    ChangeNotifierProvider(
+      create: (c) => Store(),
+      child: MaterialApp(
+        theme: style.theme,
+        home: MyApp(),
+      ),
     ),
   );
 }
@@ -181,14 +186,82 @@ class _CustomListViewState extends State<CustomListView> {
               widget.data[idx]['image'].runtimeType == String
                   ? Image.network(widget.data[idx]['image'])
                   : Image.file(widget.data[idx]['image']),
+              GestureDetector(
+                child: Text(widget.data[idx]['user']),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (e, a1, a2) => Profile(),
+                      transitionsBuilder: (c, a1, a2, child) => SlideTransition(
+                        position: Tween(
+                          begin: Offset(1.0, 0.0),
+                          end: Offset(0.0, 0.0),
+                        ).animate(a1),
+                        child: child,
+                      ),
+                    ),
+                    // CupertinoPageRoute(builder: (c) => Profile()),
+                  );
+                },
+              ),
               Text('좋아요 ${widget.data[idx]['likes'].toString()}'),
-              Text(widget.data[idx]['user']),
+              Text(widget.data[idx]['date']),
               Text(widget.data[idx]['content']),
             ],
           );
         },
       );
     }
+  }
+}
+
+class Store extends ChangeNotifier {
+  var name = 'john park';
+  var follower = 0;
+  var followed = false;
+
+  changeName() {
+    name = 'john kim';
+    notifyListeners();
+  }
+
+  changeFollow() {
+    if (followed) {
+      follower -= 1;
+    } else {
+      follower += 1;
+    }
+
+    followed = !followed;
+    notifyListeners();
+  }
+}
+
+class Profile extends StatelessWidget {
+  const Profile({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(context.watch<Store>().name)),
+      body: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          CircleAvatar(
+            radius: 30,
+            backgroundColor: Colors.grey,
+          ),
+          Text('팔로우 ${context.watch<Store>().follower}명'),
+          ElevatedButton(
+            onPressed: () {
+              context.read<Store>().changeFollow();
+            },
+            child: Text('팔로우'),
+          )
+        ],
+      ),
+    );
   }
 }
 
