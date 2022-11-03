@@ -7,6 +7,7 @@ import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import './notification.dart' as notification;
 
 void main() {
   runApp(
@@ -88,11 +89,18 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     saveData();
     getData();
+    notification.initNotification(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Text('hihi'),
+        onPressed: () {
+          notification.showNotification();
+        },
+      ),
       appBar: AppBar(
         actions: [
           IconButton(
@@ -258,28 +266,51 @@ class Profile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(context.watch<Store2>().name)),
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          CircleAvatar(
-            radius: 30,
-            backgroundColor: Colors.grey,
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: ProfileHeader(),
           ),
-          Text('팔로우 ${context.watch<Store>().follower}명'),
-          ElevatedButton(
-            onPressed: () {
-              context.read<Store>().changeFollow();
-            },
-            child: Text('팔로우'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              context.read<Store>().getData();
-            },
-            child: Text('사진 가져오기'),
+          SliverGrid(
+            delegate: SliverChildBuilderDelegate(
+              (c, i) => Image.network(context.watch<Store>().profileImage[i]),
+              childCount: context.watch<Store>().profileImage.length,
+            ),
+            gridDelegate:
+                SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
           )
         ],
       ),
+    );
+  }
+}
+
+class ProfileHeader extends StatelessWidget {
+  const ProfileHeader({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        CircleAvatar(
+          radius: 30,
+          backgroundColor: Colors.grey,
+        ),
+        Text('팔로우 ${context.watch<Store>().follower}명'),
+        ElevatedButton(
+          onPressed: () {
+            context.read<Store>().changeFollow();
+          },
+          child: Text('팔로우'),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            context.read<Store>().getData();
+          },
+          child: Text('사진 가져오기'),
+        )
+      ],
     );
   }
 }
