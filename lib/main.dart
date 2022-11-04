@@ -8,8 +8,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import './notification.dart' as notification;
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import './shop.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(
     MultiProvider(
       providers: [
@@ -98,7 +105,7 @@ class _MyAppState extends State<MyApp> {
       floatingActionButton: FloatingActionButton(
         child: Text('hihi'),
         onPressed: () {
-          notification.showNotification();
+          notification.showNotification2();
         },
       ),
       appBar: AppBar(
@@ -146,7 +153,7 @@ class _MyAppState extends State<MyApp> {
           });
         },
       ),
-      body: [CustomListView(data: list, addData: addData), Text('샵')][tab],
+      body: [CustomListView(data: list, addData: addData), Shop()][tab],
     );
   }
 }

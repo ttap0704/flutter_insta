@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "545667555936",
+    "firebase_url": "https://flutter-insta-cc93e-default-rtdb.firebaseio.com",
+    "project_id": "flutter-insta-cc93e",
+    "storage_bucket": "flutter-insta-cc93e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:545667555936:android:501ea26a77c9c939399905",
+        "android_client_info": {
+          "package_name": "com.futtler22.instagram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "545667555936-t4rr0g1mp6k179rlfqdnrlbrv6udkdib.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfyT8dxVWysrzY0Mpv6cEYItpvJfy7pcg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "545667555936-t4rr0g1mp6k179rlfqdnrlbrv6udkdib.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "545667555936-5in0dhu8m7ireisujiolhsb27vfisdjm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.futtler22.instagram"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
