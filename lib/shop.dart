@@ -65,7 +65,7 @@ class _ShopState extends State<Shop> {
   void initState() {
     super.initState();
     getData();
-    getData2();
+    // getData2();
   }
 
   @override

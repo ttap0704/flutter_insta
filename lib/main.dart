@@ -101,6 +101,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Text('hihi'),
@@ -225,7 +228,12 @@ class _CustomListViewState extends State<CustomListView> {
               ),
               Text('좋아요 ${widget.data[idx]['likes'].toString()}'),
               Text(widget.data[idx]['date']),
-              Text(widget.data[idx]['content']),
+              Text(
+                widget.data[idx]['content'],
+                style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.width > 600 ? 30 : 16,
+                ),
+              ),
             ],
           );
         },
